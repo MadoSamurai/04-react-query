@@ -8,7 +8,7 @@ import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import Loader from '../Loader/Loader';
 import MovieGrid from '../MovieGrid/MovieGrid';
 import MovieModal from '../MovieModal/MovieModal';
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
 import ReactPaginateModule from 'react-paginate';
 import type { ReactPaginateProps } from 'react-paginate';
@@ -27,9 +27,10 @@ function App() {
   const [page, setPage] = useState<number>(1);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading, isError, isSuccess } = useQuery({
     queryKey: ['movie', searchQuery, page],
     queryFn: () => fetchMovies(searchQuery, page),
+    placeholderData: keepPreviousData,
     enabled: Boolean(searchQuery),
   });
 
@@ -43,13 +44,17 @@ function App() {
 
   const movies = data?.results ?? [];
   const totalPage = data?.total_pages ?? 0;
+  const isServerError = isError;
+  const isNotFound = isSuccess && movies.length === 0;
   return (
     <>
       <div className={styles.app}>
         <Toaster position="top-right" />
         <SearchBar onSubmit={handleSearch} />
-        {isError && <ErrorMessage />}
+        {/* {isError && <ErrorMessage />} */}
         {isLoading && <Loader />}
+        {isServerError && <ErrorMessage />}
+        {isNotFound && !isLoading && <ErrorMessage />}
         {totalPage > 1 && !isLoading && (
           <ReactPaginate
             pageCount={totalPage}
