@@ -1,9 +1,12 @@
 import axios from 'axios';
-import type { FetchMovieResponse } from '../types/movie';
+import type { Movie } from '../types/movie';
 
-// interface FetchMovieResponse {
-//   results: Movie[];
-// }
+export interface FetchMovieResponse {
+  results: Movie[];
+  total_pages: number;
+  page: number;
+  total_results: number;
+}
 
 async function fetchMovies(
   query: string,
