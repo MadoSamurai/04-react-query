@@ -48,11 +48,12 @@ function App() {
     if (isSuccess && !isFetching && movies.length === 0 && searchQuery) {
       toast.error('No movies found for your request.');
     }
-  }, [isSuccess, movies.length, searchQuery, page]);
+  }, [isSuccess, isFetching, movies.length, searchQuery, page]);
+
   return (
     <>
       <div className={styles.app}>
-        <Toaster position="top-right" />
+        <Toaster position="top-center" />
         <SearchBar onSubmit={handleSearch} />
         {isError && <ErrorMessage />}
         {isLoading && <Loader />}
