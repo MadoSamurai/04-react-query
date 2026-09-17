@@ -27,14 +27,17 @@ function SearchBar({ onSubmit }: SearchBarProps) {
           Powered by TMDB
         </a>
         <form className={styles.form} action={handleForm}>
-          <input
-            className={styles.input}
-            type="text"
-            name="query"
-            autoComplete="off"
-            placeholder="Search movies..."
-            autoFocus
-          />
+          <label>
+            <input
+              id="search-input"
+              className={styles.input}
+              type="text"
+              name="query"
+              autoComplete="off"
+              placeholder="Search movies..."
+              autoFocus
+            />
+          </label>
           <button className={styles.button} type="submit">
             Search
           </button>
